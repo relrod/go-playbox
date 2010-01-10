@@ -1,0 +1,4 @@
+Place $GOROOT/misc/vim/go.vim in ~/.vim/syntax/ and the following lines in your ~/.vimrc:
+
+   " Go specific things:
+   au BufRead,BufNewFile *.go set filetype=go
