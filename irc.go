@@ -90,13 +90,13 @@ func main() {
             host = source[j+1 : len(source)]
          }
       }
+      args := strings.Split(msg, " :", 2)
+
       ping,err := regexp.MatchString("PING", msg)
       if ping {
          con.socket.Write(strings.Bytes("PONG :" + con.server))
          println("*** POKE *** I have just ***PONG***'d the server!")
       } else { // Not a ping, so show the message. We also handle commands here.
-         args := strings.Split(msg, " :", 2)
-         // args = strings.Split(args[0], " ", 0)
          if len(args) > 1 {
             printmsg = fmt.Sprintf("%s (%s@%s) said: %s", nick, user, host, args[1])
             println(printmsg)
