@@ -1,1 +1,3 @@
 *.swp
+/go-play
+/go-play/*
