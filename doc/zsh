@@ -1,0 +1,16 @@
+In my .zshrc, I have the following Go-specific lines.
+This allows me to use `go <filename>.go` to compile go files.
+Of course change the variables to your own setup.
+
+   # Go Specific:
+   function go() {
+      NAME=`echo ${1} | cut -d '.' -f 1`
+      6g ${1};
+      6l -o $NAME $NAME.6;
+      rm $NAME.6;
+   }
+
+   export GOROOT=$HOME/go
+   export GOARCH=amd64
+   export GOOS=freebsd
+   export GOBIN=$HOME/bin
