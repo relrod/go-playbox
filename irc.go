@@ -43,6 +43,11 @@ func (irc *IRCConnection) Join(channel string) {
    irc.socket.Write(strings.Bytes("JOIN " + channel + "\r\n"))
 }
 
+func (irc *IRCConnection) MyWrite(channel string) {
+   println(channel)
+   irc.socket.Write(strings.Bytes(channel))
+}
+
 func IRC(nick string, user string) *IRCConnection {
    irc := new(IRCConnection)
    irc.registered = false
@@ -63,8 +68,8 @@ func main() {
       fmt.Printf("%#v\n", con)
       os.Exit(1)
    }
-   b := strings.Bytes("USER hi hi hi hi\r\nNICK go\r\n")
-   con.socket.Write(b)
+   b := "USER hi hi hi hi\r\nNICK go\r\n"
+   con.MyWrite(b)
    br := bufio.NewReader(con.socket)
    var source, nick, user, host, printmsg string
    con.Join("#bots")
@@ -95,7 +100,7 @@ func main() {
 
       ping,err := regexp.MatchString("PING", msg)
       if ping {
-         con.socket.Write(strings.Bytes("PONG :" + con.server))
+         con.MyWrite("PONG :" + con.server)
          println("*** POKE *** I have just ***PONG***'d the server!")
       } else { // Not a ping, so show the message. We also handle commands here.
          if len(args) > 1 {
@@ -109,7 +114,8 @@ func main() {
                matches := re.MatchStrings(args[1])
                println("GOOD OL' '" + matches[1] + "'")
                println("PRIVMSG #bots :\001ACTION smacks " + matches[1] + "\001\r\n")
-               con.socket.Write(strings.Bytes("PRIVMSG #bots :\001ACTION smacks " + matches[1] + "\001\r\n"))
+               con.MyWrite("PRIVMSG #bots :\001ACTION smacks " + matches[1] + "\001\r\n")
+
             }
          }
       }
