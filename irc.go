@@ -101,12 +101,14 @@ func main() {
          if len(args) > 1 {
             printmsg = fmt.Sprintf("%s (%s@%s) said: %s", nick, user, host, args[1])
             println(printmsg)
-            smack, _ := regexp.MatchString("!smack", args[1])
+            smack, _ := regexp.MatchString("^!smack", args[1])
+            fmt.Printf("smack is: %s\n", smack)
             if smack {
                println("SMACK ALERT!")
-               re, _ := regexp.Compile("!smack (.+)")
+               re, _ := regexp.Compile("^!smack (.+)")
                matches := re.MatchStrings(args[1])
                println("GOOD OL' '" + matches[1] + "'")
+               println("PRIVMSG #bots :\001ACTION smacks " + matches[1] + "\001\r\n")
                con.socket.Write(strings.Bytes("PRIVMSG #bots :\001ACTION smacks " + matches[1] + "\001\r\n"))
             }
          }
