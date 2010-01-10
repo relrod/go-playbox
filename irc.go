@@ -91,6 +91,7 @@ func main() {
          }
       }
       args := strings.Split(msg, " :", 2)
+      fmt.Printf("%#v\n", args);
 
       ping,err := regexp.MatchString("PING", msg)
       if ping {
@@ -100,12 +101,11 @@ func main() {
          if len(args) > 1 {
             printmsg = fmt.Sprintf("%s (%s@%s) said: %s", nick, user, host, args[1])
             println(printmsg)
-            smack, _ := regexp.MatchString("!smack", printmsg)
+            smack, _ := regexp.MatchString("!smack", args[1])
             if smack {
                println("SMACK ALERT!")
                re, _ := regexp.Compile("!smack (.+)")
-               matches := re.MatchStrings(printmsg)
-               fmt.Printf("%#v\n", matches);
+               matches := re.MatchStrings(args[1])
                println("GOOD OL' '" + matches[1] + "'")
                con.socket.Write(strings.Bytes("PRIVMSG #bots :\001ACTION smacks " + matches[1] + "\001\r\n"))
             }
